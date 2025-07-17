@@ -1,4 +1,4 @@
-# Mac: SwDev environment set up for Python, PyCharm, Git and GitHub
+# Mac: SwDev environment set up for Python, PyCharm, Git and GitHub 
 
 This guide helps you to set up installations with Mac's package handler Homebrew and work with Git+GitHub to save your code. 
 It also shows you how to use GitHub with PyCharm on Mac. You’ll learn how to install the right tools, keep track of your work, and organize your projects while collaborating with the team.  

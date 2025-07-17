@@ -1,4 +1,4 @@
-# GPG Keys
+# GPG Keys 
 ## This document explains what are GPG keys, describes steps for creation of GPG keys and how are they different from SSH keys.  
 
 ### GPG Key Use Cases
