@@ -4,12 +4,17 @@
 * [Set Up Software Development Environment](#set-up-software-development-environment)
   * [Reference Pictures](#reference-pictures)
     * [GitHub](#github)
-      * [Code tab](#code-tab-)
-      * [How to create a new branch](#how-to-create-a-new-branch-)
-      * [How to clone the repository](#how-to-clone-the-repository-)
+      * [Code tab](#code-tab)
+      * [How to create a new branch](#how-to-create-a-new-branch)
+      * [How to clone the repository](#how-to-clone-the-repository)
     * [Pycharm](#pycharm)
+  * [Prerequisites](#prerequisites)
+    * [CLI](#cli)
+    * [macOS: Command-Line Text Editor vi](#macos-command-line-text-editor-vi)
   * [Mac](#mac)
-  * [What is Homebrew?](#what-is-homebrew)
+  * [What is a package handler?](#what-is-a-package-handler)
+    * [Table of Common Package Managers](#table-of-common-package-managers)
+    * [What is Homebrew?](#what-is-homebrew)
   * [Step-by-step guide](#step-by-step-guide)
     * [0. Prerequisite](#0-prerequisite)
     * [1. Install Xcode (and Command Line Tools)](#1-install-xcode-and-command-line-tools)
@@ -51,27 +56,119 @@
 ## Reference Pictures
 
 ### GitHub
-#### Code tab  
-![](img/GitHub-view.png)  
-#### How to create a new branch  
-![](img/GitHub-branch.png)  
-#### How to clone the repository  
+
+#### Code tab
+
+![](img/GitHub-view.png)
+
+#### How to create a new branch
+
+![](img/GitHub-branch.png)
+
+#### How to clone the repository
+
 ![](img/GitHub-clone.png)
 
 ### Pycharm
+
 ![](img/PyCharm-view.png)
+
+## Prerequisites
+
+### CLI
+
+You must know how to use common Linux/[macOS](https://ss64.com/mac/) or
+Windows [Command](https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/windows-commands) and
+[PowerShell](https://www.pdq.com/powershell/) commands in a terminal/PowerShell window to list files/directories, view
+content of files, and change directory and change content of files (see `vi` below).  
+AI can help you if you just ask nicely or google for "<what you look for> cheat sheet".
+
+Basic notation in CLI:
+
+* `/`: Root directory
+* `/opt/homebrew/`: Directory path from root directory
+* `.ssh/`: Directory path (down) from where you are now (Note missing `/` in the beginning)
+* `~`: An alias for your home directory
+* `.<filename or directory>`: Files or directory starting with a dot are hidden. You do not see them in Finder, nor with
+  plain `ls`, you need `ls -al` to see them. Common ones are:
+   * Files: `.zprofile`, `.zshrc`, `.gitignore`, `.gitattributes`
+   * Directories: `.ssh/`, `.git/`, `.docker/`
+
+Minimal list of bash/zsh CLI commands for this guide:
+
+* `ls -al`: List content of the directory you are in. This command also list the "hidden" files starting with a dot (`.`)
+* `ls -al <directory_path>`: List the content of stated directory: `ls -al /opt/homebrew/`
+* `cd`: Change directory to your home (`~`) directory
+* `cd <directory_path>`: Change to a specific directory: `cd ~/.ssh/` **Note:** Directories and files with space in them
+  needs escape characters. AI it!
+* `Ctrl` + `C`: You panic command. Will quit any CLI program you are in.
+* `pwd`: Shows you where you are in the directory structure from the root of the computer.
+   * `/Users/morre`
+* `which <application/package>`: Shows the path to what package will be activated running a command: `which python`
+   * "python: aliased to python3" → `which python3` → `/opt/homebrew/opt/python@3.13/bin/python3`
+* `cat <filename>`: Shows the content of a file without possibility to change it. Safe!: `cat .ssh/config`
+* `mkdir <directory_name>`: Makes a directory: `mkdir .my_hidden_dir`
+* `touch <filename>`: Creates an empty file: `touch .my_hidden_dir/only_fans.md`
+
+### macOS: Command-Line Text Editor vi
+
+There is a danger working with OS and code files in graphic text editors, like TextEdit (macOS) and Notepad (Win): They
+might leave hidden characters and have the wrong text encoding, not UTF-8.  
+In this case we have to choose your pain because low-level command-line text editors are not really user-friendly.
+But if you compare learning a few ugly commands vs. spending hours trying to understand why things do not work, you
+should choose the commands pain.
+
+Minimal list of `vi` commands for this guide:
+
+* `vi <file_name>`: Open an existing file or create a new file if it does not exist with the stated name: `vi .zprofile`
+* `i`: Go into insert mode. Now you can use arrows up and down to go to the correct place. **Note:** Do not try to copy
+  content without being in insert mode.
+* `Esc`: Click Escape to get out of insert mode.
+* `:x`: Colon then x saves your file and quit vi.
+* `:q!`: Colon, then q then ! will close your file and vi without saving any change.
 
 ## Mac
 
-This guide helps you to set up installations with Mac's package handler Homebrew and work with Git+GitHub to save your
+This guide helps you to set up installations with the macOS package handler Homebrew and work with Git+GitHub to save
+your
 code.
 It also shows you how to use GitHub with PyCharm on Mac. You’ll learn how to install the right tools, keep track of your
 work, and organize your projects while collaborating with the team.
 
-## What is Homebrew?
+## What is a package handler?
+
+The use of package handler comes from the rise of Open Source in software development. In the old days you had to write
+all the code yourself, but the nice people started to create free software, but it was a problem finding them and
+distributing them. The solution was to have a central place for code, a repository, and a small application to download
+and keep track of package versions.  
+The second reason for the rise of package handler is that geeks got tired of going to multiple websites to download
+standard applications to their workstation. What if one could do as the software developers do-have a text file with all
+applications one needs and the OS does the rest?
+
+So now there are many package handlers, and you will use more than one.  
+**Note:*** It is important for you to understand what package manager to use to what task!
+
+### Table of Common Package Managers
+
+| Name                 | Command  | For    | Comments                                                               |
+|----------------------|----------|--------|------------------------------------------------------------------------|
+| Homebrew             | `brew`   | macOS  | Global for OS. Use in Terminal/iTerm.                                  |
+| WinGet               | `winget` | Win 11 | Global for OS. Use in PowerShell 7+.                                   |
+| PIP                  | `pip`    | Python | Use in IDE (PyCharm, VS Code). Manually store in `requirements.txt`    |
+| UV                   | `uv`     | Python | Use in IDE. Way faster than PIP. Store in `pyproject.toml`             |
+| Node Package Manager | `npm`    | JS     | Use in IDE. Store in `package.json`                                    |
+| Maven                | `mvn`    | Java   | Use in IDE. Also build tool. Stores in `pom.xml`                       |
+| NuGet                | `nuget`  | C#     | Use in IDE. Also build tool. Stores in `packages.config` or `*.csproj` |
+
+Reading the list above, you will see that you will most likely work with at least two package managers: One for CLI
+work (global OS) and one for your coding.
+
+We will focus on Homebrew and UV for macOS, and later WinGet and UV for Windows.
+
+### What is Homebrew?
 
 Read up about [Brew](https://brew.sh/) on its home page.  
-Homebrew is a tool for Mac computers that helps you easily download and install the programs and tools (packages) you
+Homebrew is a tool for Mac computers that helps you download and install the programs and tools (packages) you
 need.  
 Brew has two levels:
 
@@ -80,14 +177,14 @@ Brew has two levels:
 
 The reason to use a package handler is that instead of manually searching for and downloading software, you can use
 simple commands to install everything quickly.
-It’s like an automated app store, where you can you Terminal to get what you need.
+It’s like an automated app store, where you can use your Terminal to get what you need.
 
 ## Step-by-step guide
 
 ### 0. Prerequisite
 
 To be able to work as a developer on Mac, you need the basic tools that will help you work with and build your software.
-This includes among other things compilers and build tools. Apple bundles these in a developer package.
+This includes, among other things, compilers and build tools. Apple bundles these in a developer package.
 
 ### 1. Install Xcode (and Command Line Tools)
 
@@ -118,8 +215,9 @@ more.
 ### 3. Install Packages from Brewfile
 
 For a rapid installation, you should create a file with the packages you want to install, a Brewfile.  
-Below are recommended packages for a work as a developer and Dirt Remover.
-We are going to use `vi` as text editor, see its commands [here](https://www.cs.colostate.edu/helpdocs/vi.html).
+Below are recommended packages for work as a developer and Dirt Remover.
+We are going to use `vi` as text editor, see its commands [here](https://www.cs.colostate.edu/helpdocs/vi.html) and a
+few `vi` instructions [above](#macos-command-line-text-editor-vi).
 
 1. Create a `Brewfile` in your home directory
    1. Open Terminal.
@@ -127,14 +225,15 @@ We are going to use `vi` as text editor, see its commands [here](https://www.cs.
    3. Create a Brewfile with `vi` - the horrible text editor with `vi Brewfile` + Return.
       1. Copy the Brewfile content below.
       2. Press `i` for insert.
-      3. Past the content.
+      3. Paste the content.
       4. Press `Esc` to get out of Insert mode
       5. Press `:x` so save your file.
          * To exit without saving: `:q!`
-2. Check your Brewfile with `brew bundle check`.
+   4. Check its content with `cat Brewfile`
+2. Validate your Brewfile with `brew bundle check`.
 3. Install the content of your `Brewfile` bundle with `brew bundle install` + Return.
-4. If you want to install additional packages you can create a named file and install its content with `brew bundle
-   --file=~/path/to/additional-packages`
+   * If you want to install additional packages, you can create a named file and install its content with `brew bundle
+      --file=~/path/to/additional-packages`
 
 #### Good Brew commands
 
@@ -146,6 +245,8 @@ We are going to use `vi` as text editor, see its commands [here](https://www.cs.
 * `brew cleanup`: Remove older versions:
 
 #### Brew packages to install
+
+**Note:** You can check the content of your files with `cat <filename>` after saving them with `vi`.
 
 `Brewfile` - our recommended Brews and Casks
 
@@ -212,9 +313,10 @@ tap 'homebrew/services'
 brew 'icu4c@77'  # CLDR for multi-culture (m10e) development
 brew 'gradle'  # Advance build tool for Java
 brew 'maven'  # Basic, simple-to-use build tool for Java
+brew 'node'  # Java Script (JS) package including the package handler nmp
 brew 'openjdk'  # Java development kit
 cask 'logitune'  # If you have Logitech hardware
-cask 'tunnelblick'  # OpenVPN client for Mac
+cask 'tunnelblick'  # OpenVPN client for Mac    
 cask 'zoc'  # SSH Client and Terminal Emulator
 ```
 
@@ -225,7 +327,7 @@ cask 'zoc'  # SSH Client and Terminal Emulator
 3. Find the iTerm icon in the Dock to the right.
 4. Right-click on the icon and choose Options/Keep in Dock.
 5. Move the icon to a good place in the Dock by dragging it.
-6. Remove the Terminal icon fron the dock by dragging it up and away from the Dock.
+6. Remove the Terminal icon from the dock by dragging it up and away from the Dock.
 7. When needing to work with CLI, click on the iTerm icon in the Dock.
 
 ### 5. Install and activate Zsh (recommended)
@@ -238,18 +340,18 @@ Zsh is the default shell on macOS, but you may need to ensure it’s active and 
 3. In the Mac menu, choose iTerm2/Settings... and set the following settings:
    * Profiles
       * General
-        * Command:Login Shell: `/bin/zsh`
+         * Command:Login Shell: `/bin/zsh`
       * Window
-        * New windows: `160` columns by `50` rows (or larger)
+         * New windows: `160` columns by `50` rows (or larger)
       * Terminal
-        * Character encoding: Unicode (UTF-8)
-        * Environment: Use custom locale..., click Change... and set English (United States), UTF-8
-          * Value shown below: `LANG=en_US.UTF-8`
+         * Character encoding: Unicode (UTF-8)
+         * Environment: Use custom locale..., click Change... and set English (United States), UTF-8
+            * Value shown below: `LANG=en_US.UTF-8`
 4. Close the Settings window.
 5. In a iTerm window, verify Zsh is active with command: `echo $SHELL`
    * Output: `/bin/zsh`
-6. Tips: If you want more then one window, create a new tab with Command + T
-   * Change between tabs by Command + <no.> or click in the top frame.
+6. Tips: If you want more than one window, create a new tab with Command + T
+   * Change between tabs by Command + <no.> or click on the top frame.
 
 ### 6. Install Zsh helpers: Oh-my-Zsh,
 
@@ -260,12 +362,12 @@ Zsh is the default shell on macOS, but you may need to ensure it’s active and 
 2. The script manipulates your config Zsh files, so check out the settings:
    * `cat ~/.zshrc`
    * `cat ~/.zprofile`
-3. If not done, install helper files (they are included in above Brewfile):
+3. If not done, install helper files (they are included in the above Brewfile):
    * `brew install zsh-completions zsh-autosuggestions zsh-syntax-highlighting`
 
 ### 7. Set up .zshrc and .zprofile config file
 
-To control Zsh's behavior there are five different file types, that can be both centrally stored `/etc` and in your home
+To control Zsh's behavior, there are five different file types, that can be both centrally stored `/etc` and in your home
 directory `~`.  
 There are five file types, listed in the order → of read by Zsh when you start your iTerm/Terminal session:
 
@@ -277,9 +379,9 @@ There are five file types, listed in the order → of read by Zsh when you start
 
 But the two that are important for "daily geeking" are `zprofile` → `zshrc`, and we will only use home directory
 storage, where we add a dot `.` prefix to hide them.
-To simplify why we have these to files, we can say:
+To simplify why we have these two files, we can say:
 
-* `.zprofile`: Settings/variables for humans and scripts, i.e. for everything, for example:
+* `.zprofile`: Settings/variables for humans and scripts, i.e., for everything, for example:
    * PATH
    * EDITOR
 * `.zshrc`: Settings for what humans need, for example:
@@ -292,7 +394,11 @@ To simplify why we have these to files, we can say:
 
 Below are recommended settings for each file for Apple vs. Intel Macs.
 
-**Note**: Remove Java PATHs if you are not using it
+**Note:** You have to use `vi` to change the content of the files below. Find `vi`
+instructions [above](#macos-command-line-text-editor-vi).
+**Note:** You can check the content of your files with `cat <filename>` after saving them with `vi`.
+**Note:** Remove Java PATHs in `.zprofile`if you are not using Java (`export JAVA_HOME="/opt/homebrew/opt/openjdk"` and
+`opt/homebrew/opt/openjdk/bin`)
 
 #### Apple-based .zprofile
 
@@ -436,15 +542,18 @@ source /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
    * `git --version`
    * `git lfs --version`
 3. Set up your global git parameters
-   * `git config --global user.name "<Firstname Lastname>"`
-   * `git config --global user.email "<login_name>@example.com"`
+   * `git config --global user.name "This_should_be_your_firstname This_should_be_your_firstname "`
+      * `git config --global user.name "Lars Mårelius"`
+   * `git config --global user.email "change_this_to_your_correct_email@example.com"`
+      *
+         * `git config --global user.email "morre@tentixo.com"`
    * Mac: `git config --global core.autocrlf input`  # Git leaves LF untouched
    * Win: `git config --global core.autocrlf false`  # Git converts CRLF to LF on check-in, and LF back to CRLF on
      checkout
 4. Verify your settings: `git config --global --list`
 5. Activate Git LFS globally in your workstation with `git lfs install`.  
-   **Note**: What files that Git LFS will handle will be set by a `.gitattributes` file in each repository  
-   (see below), so your digital files is not handled by Git (Git only works on text files).
+   **Note**: What files that Git LFS will handle will be set by a `.gitattributes` file in each project repository root
+   (see below), so your digital files are not handled by Git (Git only works on text files).
 
 ### 9. Create & install your default SSH key pair
 
@@ -452,41 +561,45 @@ source /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
    **Note**: You shoule now be in your home directory. If unsure or using an old terminal session hit `cd`.
 2. Adapt the settings for your email and preferred name for your ssh key, then generate a new SSH key with:
    **Note**: Use your email and use a good "nick" for your filename so you find it easily
-    ```text
-    ssh-keygen -o -a 100 -t ed25519 -C “name@example.com" -f ~/.ssh/name_default`
-    ``` 
-   where:
-   * **-t ed25519**: Specifies the key type (modern and secure).
-   * **-a 100**: Adds additional computational cost for better security.
-   * **-C "name@example.com"**: Provides an identifier for your key.
-   * **-f ~/.ssh/name_default**: Specifies the filename to save the key at the correct place in your home directory.  
-     **Note**: The command will create a secret file, without suffix and a public file with suffix `.pub`.  
-     Your secret file should **never** be shared and only copied to your 1Password. Make sure to always add your public
-     part to services.
+   *
+   `ssh-keygen -o -a 100 -t ed25519 -C “change_this_to_your_correct_email@example.com" -f ~/.ssh/change_this_to_your_chosen_file_name`
+   * `ssh-keygen -o -a 100 -t ed25519 -C “morre@tentixo.com" -f ~/.ssh/morre_default`
+     where:
+   * `-t ed25519`: Specifies the key type (modern and secure).
+   * `-a 100`: Adds additional computational cost for better security.
+   * `-C "name@example.com"`: Provides an identifier for your key.
+   * `-f ~/.ssh/change_this_to_your_chosen_file_name`: Specifies the filename to save the key at the correct place in
+     your home directory.  
+     **Note**: The command will create a secret file, without the suffix and a public file with suffix `.pub`.  
+     Your secret file should **never** be shared and store a copy of both secret and public part in your 1Password. Make
+     sure to always add your **public** file to your SaaS
+     like [GitHub](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent).
 3. Follow the prompts to save the key (press Enter to save in the default location-your home dir `.ssh/`)
 4. Create an SSH config file named `config`, so your applications like PyCharm, will be using your default SSH key.   
-   Note: Change the name of the file in the config to your chosen name!  
-   **Mac: .ssh/config**
-   ```text
-   Host *
-     UseKeychain yes
-     AddKeysToAgent yes
-     IdentityFile ~/.ssh/name_default
-   ```
-   **Win: .ssh/config**
-   ```text
-   Host *
-     UseKeychain yes
-     IdentityFile ~/.ssh/name_default
-   ```
+   Note: Change the name of the file in the config to your chosen name!
+   * Mac: `.ssh/config`
+     Note: Once again you have to use `vi` to create the file. Find `vi`
+     instructions [above](#macos-command-line-text-editor-vi).
+     ```text
+     Host *
+       UseKeychain yes
+       AddKeysToAgent yes
+       IdentityFile ~/.ssh/change_this_to_your_chosen_file_name
+     ```
+   * Win: `.ssh/config`
+     ```text
+     Host *
+       UseKeychain yes
+       IdentityFile ~/.ssh/change_this_to_your_chosen_file_name
+     ```
 5. Start and add the SSH **secret** key to the SSH agent:    
    `eval "$(ssh-agent -s)"`
-   `ssh-add -K ~/.ssh/name_default`
+   `ssh-add -K ~/.ssh/change_this_to_your_chosen_file_name`
 
 ### 10. Create a personal GitHub account and add your SSH public file
 
 1. Go to [GitHub](https://github.com/join) and click Sign Up (This will be your private account)
-   * Do not use your any company email account-use your personal, like `name@gmail.com`.
+   * Do not use your company email-use your personal, like `name@gmail.com`.
 2. Follow the prompts to create an account with your email and username.
 3. Verify your account via email.
 4. **Set up MFA!**
@@ -495,7 +608,7 @@ source /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
       * Mac: `pbcopy < ~/.ssh/name_default.pub`
       * Win: `clip < ~/.ssh/name_default.pub`
    2. Go to your GitHub account Settings → SSH and GPG keys → click New SSH Key
-   3. Paste the SSH key and click add SSH key
+   3. Paste the SSH key and click add an SSH key
    4. Test SSH connection `ssh -T git@github.com`      
       If the SSH key is set up correctly and added to your GitHub account, you will see a message similar to:    
       *Hi <your_username>! You've successfully authenticated, but GitHub does not provide shell access.*
@@ -512,7 +625,7 @@ source /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
    5. Choose the visibility:
       * Public: Anyone can see it ← use this one to avoid costs
       * Private: Only you (and invited collaborators) can access it (€€€)
-   6. Add a **only** a README file
+   6. Add **only** a README file
    7. Click Create repository
 2. Branch from main/master branch and create a `develop` branch.
    1. Click on `main` icon.
@@ -529,16 +642,16 @@ source /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
    2. In the left pane, choose Plugins
    3. In the middle area, choose Marketplace
    4. Search for and click the Install button after selection for
-      * .gitignore
-      * .gitattributes
-      * mermaind
+      * .ignore
+      * .gitattributes support
+      * mermaid
    5. If needed, Restart PyCharm
 4. Clone the created repository from step 10.
    1. On GitHub, select your repository and click the gree Code button.
-   2. Select SSH tab.
+   2. Select the SSH tab.
    3. Copy the URI for your repository, looks like `git@github.com:my-name/miffo-first-repo`
    4. Go back to PyCharm.
-   5. Choose menu File/Project from Version Control...
+   5. Clone your repository via the menu File / Project from Version Control...
    6. Fill in the data from GitHug
       * URL: `git@github.com:my-name/miffo-first-repo` ← Pasted from above
       * Directory: `/Users/my-user/PycharmProjects/miffo-first-repo` ← Make sure it is saved in your PycharmProjects
@@ -575,7 +688,7 @@ source /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
             - [ ] PowerShell
    4. Click Create
    5. Add it to Git. (Normally PyCharm asks.)
-   6. Open the `.gitignore` file and add the following lines to protect secrets files according to our naming standard:
+   6. Open the `.gitignore` file and add the following lines to protect secret files according to our naming standard:
       ```text
       ### Txo template
       # Protect secrets
@@ -616,18 +729,18 @@ source /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
    1. In the left pane in PyCharm, click on Commit icon (normally second)
    2. Choose all files added to Git by selecting the group Changes.
    3. Write a commit message `Added .gitignore and.gitattributes`.
-   4. In the bottom on the pane, click Commit and Push...
+   4. At the bottom of the pane, click Commit and Push...
    5. Click Push. Now your `develop` branch is updated on GitHub.
 9. Create a `uv` supported virtual environment (require `uv`, part of your Brewfile, if not installed, run:
    `brew install uv`
-   1. Select menu PyCharm/Settings...
+   1. Select the menu PyCharm/Settings...
    2. In the left pane, select: Project: your_project_name/Python Interpreter
       1. Click the dropdown list next to the list of Python interpreters
       2. On the left side of Python Interpreter, Select Add Interpreter/Add Local Interpreter or Show All….depending on
          your version of PyCharm
          * Environment: Generate new
          * Type: uv
-         * Base python: <copy your path to the latest python>, as example Python 3.13
+         * Base python: <copy your path to the latest python>, as an example Python 3.13
             * Intel-based: `/usr/local/bin/python3.13`
             * Apple-based: `/opt/homebrew/bin/python3.13`
          * Path to uv:
@@ -636,7 +749,7 @@ source /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
          * Click OK.
       3. Back in the first window, click OK.
    3. Validate that your PyCharm now has a Python interpreter and it is selected
-      * Check in Project/files window that there is a `.venv` directory
+      * Have a look in the Project/files window that there is a `.venv` directory
       * I the bottom left of you PyCharm windows, check that you have a field with
         `uv (your_project_name) [Python 3.13.X]`
       * In the pane bottom left, click the Terminal symbol and run
@@ -660,23 +773,26 @@ source /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 3. Start coding or create your Markdown files.
 
 ### 14. Install your package and keep them updated
-1. In the left PyCharm frame, click on Terminal icon. 
+
+1. In the left PyCharm frame, click on Terminal icon.
 2. Install packages via `pip install <package_name>`.
 3. Validate and later update your packes under Python Package in the left frame.
-4. Tips: Add to Git and check in these project file to help others install your project's needed packages:
+4. Tips: Add to Git and check in these project file to help others install your project's necessary packages:
    * pyproject.toml
    * uv.lock
 
 ### 15. Start coding!
-Remember this:  
-* Never directly commit/push anything to the primary branches `main` and `develop`, always use Pull Request with ticket 
-  branch and code review. 
+
+Remember this:
+
+* Never directly commit/push anything to the primary branches `main` and `develop`, always use Pull Request with ticket
+  branch and code review.
 * Always create your ticket branch on GitHub from `develop`. Fetch it to PyCharm with Git/Update project...
 * Documentation is a must!
-  * Code comments and Docstrings-describing your code.
-  * README.md: How to get the code to run.
-  * Git wiki: Broader explanation about your code in the repo.
-  * Project wiki: Needed if you have multi-repo project.
+   * Code comments and Docstrings-describing your code.
+   * README.md: How to get the code to run.
+   * Git wiki: Broader explanation about your code in the repo.
+   * Project wiki: Needed if you have multi-repo project.
 * If develop branch is way ahead of your ticket branch, rebase your ticket branch with develop as source.
 * Always commit when you have working code! "I'm just going to..." is a terrible idea.
 
@@ -714,16 +830,16 @@ of downloading, installing, and managing these types of macOS applications.
 * PyCharm provides tools like code completion, debugging, Git integration, and more to streamline Python development.
 * ~/PycharmProjects/ directory is like having a special box where you keep all your PyCharm projects. It helps you stay
   organized while working with Git and GitHub.
-* Zsh - Apple has announced that in macOS 10.15 Catalina the default shell we be zsh. This does not say that bash is
+* Zsh—Apple has announced that in macOS 10.15 Catalina, the default shell we be zsh. This does not say that bash is
   gone. Zsh is available Mojave and on older macOS versions. You can start testing zsh or even switch your default shell
   already. To see how it works just open a Terminal window and type ```zsh```. The reason Apple has not switched to
   these newer versions is that they are licensed with GPL v3. bash v3 is still GPL v2. If you are interested in depth
-  about it see link: *Moving to Zsh*
+  about it see a link: *Moving to Zsh*
 * Zsh offers enhanced productivity features like autocompletion and Oh My Zsh further enhances the shell with plugins
   and themes.
 * JetBrains toolbox is a collection of development tools and IDEs (Integrated Development Environments) which is a
   comprehensive collection of powerful and professional tools for developers, covering a wide range of programming
-  languages and platforms. With tools like IntelliJ IDEA, PyCharm, WebStorm and many more, JetBrains Toolbox gives
+  languages and platforms. With tools like IntelliJ IDEA, PyCharm, WebStorm, and many more, JetBrains Toolbox gives
   developers the tools they need to efficiently create high-quality software. JetBrain's Toolbox App makes managing
   these tools simple and centralized, improving productivity and facilitating work in complex development environments.
 * Virtual environments help you manage dependencies and avoid conflicts between projects.
@@ -732,8 +848,8 @@ of downloading, installing, and managing these types of macOS applications.
 #### What is the Purpose of Installing and Activating Zsh?
 
 To talk to your computer, you need a special language—that’s called a shell.
-Zsh (Z Shell) is smarter and faster version of the normal shell (which is called Bash). It helps you type commands more
-easily, gives you improved suggestions and makes process quicker.
+Zsh (Z Shell) is a smarter and faster version of the normal shell (which is called Bash). It helps you type commands more
+easily, gives you improved suggestions, and makes a process quicker.
 
 - Easier Typing – It autocompletes your commands if you type the initial of the command and press tab, similar to how
   your phone suggests words as you type a message.
@@ -749,7 +865,7 @@ easily, gives you improved suggestions and makes process quicker.
 
 #### Difference Between .zshrc and .zprofile
 
-Your computer is like a big playground and every time you open your playground (your terminal), you have different rules
+Your computer is like a big playground, and every time you open your playground (your terminal), you have different rules
 for how things work.
 
 **.zprofile** – The Playground Entrance Rules (One-Time Rules)
@@ -782,7 +898,7 @@ for how things work.
 * Git lets you save different versions of your work on your own computer.
 * GitHub is like an online bookshelf where you can store, share, and work on projects together with others from anywhere
   in the world!
-* Git is a version control system that tracks changes in your codebase, allows you to manage version history and helps
+* Git is a version control system that tracks changes in your codebase, allows you to manage version history, and helps
   you collaborate with others. You will need Git to interact with GitHub repositories.
 * Git allows you to push/pull code to and from GitHub.
 * Proper Git configuration ensures that your commits are correctly attributed to you when using Git.
@@ -790,7 +906,7 @@ for how things work.
 * GitHub is a cloud-based platform for version control and collaboration, built on Git. It allows developers to store,
   track, and manage code changes efficiently.
 
-Key Concepts - GitHub:
+Key Concepts—GitHub:
 
 * Repository (Repo): A storage space for your project, containing files and version history.
 * Commit: A saved change in a repository.
@@ -809,7 +925,7 @@ Key Concepts - GitHub:
 
 Common Uses:
 
-✅ Version control & code tracking  
+✅ Version control and code tracking  
 ✅ Team collaboration & code review  
 ✅ Open-source contributions
 
@@ -840,4 +956,4 @@ Why Use GitHub?
 - Secure Communication – No one can eavesdrop on your commands.
 - No Need for Passwords Every Time – It uses keys instead of typing a password every time.
 - Safe File Transfers – You can move files between computers safely.
-- Works Anywhere – **You can control your computer remotely from another device. Hence its important to keep it safe.**
+- Works Anywhere – **You can control your computer remotely from another device. Hence, it's important to keep it safe.**
